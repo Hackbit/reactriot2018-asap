@@ -1,1 +1,1 @@
-export * from './Puppy';
+export * from './Animal';
