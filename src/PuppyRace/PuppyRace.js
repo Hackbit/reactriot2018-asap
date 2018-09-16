@@ -62,7 +62,7 @@ export class PuppyRace extends React.Component {
         if (animal.progress < 100) {
           const runOrLoss =
             (animal.recoverAt && Number(animal.recoverAt) > Date.now()) ||
-            random(0, 300) === index
+            random(0, isFastMode ? 300 : 200) === index
               ? 'loss'
               : 'run';
           if (runOrLoss === 'run') {

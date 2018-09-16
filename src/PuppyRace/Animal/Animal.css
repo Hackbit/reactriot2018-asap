@@ -2,9 +2,13 @@
   --animalSize: 80px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 425px) {
   :root {
     --animalSize: 60px;
+  }
+
+  img.animal {
+    transform: translateY(2px);
   }
 }
 

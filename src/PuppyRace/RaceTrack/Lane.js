@@ -25,11 +25,11 @@ export class Lane extends React.Component {
 
   formatRank(rank) {
     if (rank === 1) {
-      rank = rank += 'st 👑'
+      rank = rank += 'st 👑';
     } else if (rank === 2) {
-      rank = rank += 'nd'
+      rank = rank += 'nd';
     } else {
-      rank = rank += 'rd'
+      rank = rank += 'rd';
     }
     return rank;
   }
@@ -38,7 +38,7 @@ export class Lane extends React.Component {
     const { animal } = this.props;
     const { rank, name, finishedAt, progress } = animal;
     return (
-      <div className={`lane ${finishedAt && 'finished'}`}>
+      <div className={`lane ${finishedAt ? 'finished' : ''}`}>
         <Animal
           {...animal}
           style={{ marginLeft: `${progress}%` }}
