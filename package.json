@@ -5,6 +5,7 @@
   "dependencies": {
     "final-form": "^4.10.0",
     "final-form-arrays": "^1.1.0",
+    "lodash-es": "^4.17.11",
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
     "react-final-form": "^3.6.5",
