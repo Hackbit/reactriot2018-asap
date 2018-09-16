@@ -11,10 +11,13 @@ export class Lane extends React.Component {
 
   render() {
     const { animal } = this.props;
-    const { progress } = animal;
+    const { finishedAt, progress } = animal;
     return (
-      <div className="lane">
-        <Animal {...animal} style={{ marginLeft: `${progress}%` }} />
+      <div className={`lane ${finishedAt && 'finished'}`}>
+        <Animal
+          {...animal}
+          style={{ marginLeft: `${progress}%` }}
+        />
       </div>
     );
   }
