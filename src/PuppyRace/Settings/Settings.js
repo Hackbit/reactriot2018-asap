@@ -81,7 +81,7 @@ export class Settings extends React.Component {
                         {({ fields }) =>
                           fields.map((name, index) => (
                             <div
-                              className={`ui input field ${
+                              className={`ui input field left action ${
                                 disabled ? 'disabled' : ''
                               }`}
                               key={index}
@@ -90,6 +90,8 @@ export class Settings extends React.Component {
                                 name={`${name}.type`}
                                 component="select"
                                 disabled={disabled}
+                                className="ui compact selection dropdown"
+                                style={{ padding: '6px' }}
                               >
                                 <option
                                   value={ANIMAL_TYPES.DOG}
