@@ -6,6 +6,23 @@ import { PuppyRaceContext } from '../PuppyRaceContext';
 import { ANIMAL_TYPES } from '../constants';
 import './Settings.css';
 
+const INITIAL_VALUES = {
+  animals: [
+    {
+      name: 'Puppy',
+      type: ANIMAL_TYPES.DOG,
+      status: ANIMAL_STATUS.STANDING,
+      progress: 0
+    },
+    {
+      name: 'Kitty',
+      type: ANIMAL_TYPES.CAT,
+      status: ANIMAL_STATUS.STANDING,
+      progress: 0
+    }
+  ]
+};
+
 export class Settings extends React.Component {
   render() {
     return (
@@ -15,6 +32,7 @@ export class Settings extends React.Component {
             <Form
               onSubmit={({ values }) => actions.setState(values)}
               mutators={arrayMutators}
+              initialValues={INITIAL_VALUES}
               render={({ handleSubmit, mutators }) => {
                 return (
                   <React.Fragment>
