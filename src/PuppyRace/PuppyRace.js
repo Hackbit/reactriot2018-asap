@@ -87,7 +87,7 @@ export class PuppyRace extends React.Component {
       const status = animals.every((animal) => animal.finishedAt)
         ? GAME_STATUS.END
         : this.state.status;
-        
+
       this.setState({ animals, status });
     } else {
       clearInterval(this.intervalTimer);
@@ -95,11 +95,33 @@ export class PuppyRace extends React.Component {
   };
 
   render() {
+    const state = this.state;
+    const actions = this.actions;
+    const isPlaying = state.status === GAME_STATUS.START;
     return (
       <PuppyRaceContext.Provider value={{ state, actions }}>
         <div>
           <RaceTrack />
           <Settings />
+          <div>
+            <button
+              onClick={() =>
+                !isPlaying ? actions.startGame() : actions.pauseGame()
+              }
+              disabled={state.status === GAME_STATUS.END}
+            >
+              {!isPlaying ? 'START' : 'PAUSE'}
+            </button>
+            <button
+              onClick={() => actions.resetGame()}
+              disabled={
+                state.status === GAME_STATUS.START ||
+                state.status === GAME_STATUS.READY
+              }
+            >
+              RESET
+            </button>
+          </div>
         </div>
       </PuppyRaceContext.Provider>
     );
