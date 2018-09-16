@@ -2,6 +2,7 @@ import React from 'react';
 import { clamp, random } from 'lodash-es';
 import { RaceTrack } from './RaceTrack';
 import { Settings } from './Settings';
+import { Controls } from './Controls';
 import { PuppyRaceContext } from './PuppyRaceContext';
 import { GAME_STATUS, ANIMAL_STATUS } from './constants';
 
@@ -79,10 +80,9 @@ export class PuppyRace extends React.Component {
             0
         );
 
-      animals.forEach(
-        (animal) =>
-          (animal.rank = sorted.findIndex((value) => value === animal) + 1)
-      );
+      animals.forEach((animal) => {
+        animal.rank = sorted.findIndex((value) => value === animal) + 1;
+      });
 
       const status = animals.every((animal) => animal.finishedAt)
         ? GAME_STATUS.END
@@ -97,35 +97,12 @@ export class PuppyRace extends React.Component {
   render() {
     const state = this.state;
     const actions = this.actions;
-    const isPlaying = state.status === GAME_STATUS.START;
     return (
       <PuppyRaceContext.Provider value={{ state, actions }}>
         <div>
           <RaceTrack />
           <Settings />
-          <div className="ui fluid">
-            <button
-              className="ui blue button"
-              onClick={() =>
-                !isPlaying ? actions.startGame() : actions.pauseGame()
-              }
-              disabled={state.status === GAME_STATUS.END}
-            >
-              <i className={`ui icon ${!isPlaying ? 'play' : 'pause'}`} />
-              {!isPlaying ? 'START' : 'PAUSE'}
-            </button>
-            <button
-              className="ui green button"
-              onClick={() => actions.resetGame()}
-              disabled={
-                state.status === GAME_STATUS.START ||
-                state.status === GAME_STATUS.READY
-              }
-            >
-              <i className={`ui icon refresh`} />
-              RESET
-            </button>
-          </div>
+          <Controls />
         </div>
       </PuppyRaceContext.Provider>
     );
