@@ -7,6 +7,7 @@ import { PuppyRaceContext } from '../PuppyRaceContext';
 import { ANIMAL_TYPES, ANIMAL_STATUS, GAME_STATUS } from '../constants';
 import './Settings.css';
 
+const LOCALSTORAGE_KEY_SETTINGS = 'settings';
 const INITIAL_VALUES = {
   animals: [
     {
@@ -25,6 +26,28 @@ const INITIAL_VALUES = {
 };
 
 export class Settings extends React.Component {
+  state = { initialValues: this.restoreSettings() };
+
+  restoreSettings() {
+    try {
+      const stored = localStorage.getItem(LOCALSTORAGE_KEY_SETTINGS);
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return INITIAL_VALUES;
+  }
+
+  saveSettings(values) {
+    try {
+      localStorage.setItem(LOCALSTORAGE_KEY_SETTINGS, JSON.stringify(values));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   render() {
     return (
       <PuppyRaceContext.Consumer>
@@ -33,14 +56,17 @@ export class Settings extends React.Component {
             <Form
               onSubmit={noop}
               mutators={arrayMutators}
-              initialValues={INITIAL_VALUES}
+              initialValues={this.state.initialValues}
               render={({ handleSubmit, mutators, values }) => {
                 const disabled = state.status !== GAME_STATUS.READY;
                 return (
                   <React.Fragment>
                     <FormSpy
                       subscription={{ values: true }}
-                      onChange={({ values }) => actions.setState(values)}
+                      onChange={({ values }) => {
+                        this.saveSettings(values);
+                        actions.setState(values);
+                      }}
                     />
                     <form
                       key="form"
