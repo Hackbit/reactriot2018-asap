@@ -15,4 +15,6 @@ Useful when playing lottery games with your friends
 - [Lodash](https://lodash.com/) for rapid development
 - [Final Form](https://github.com/final-form/final-form) for building roster form
 - [Semantic UI](https://semantic-ui.com) for basic ui styling
-- Dog and cat image: [BFF's](https://dribbble.com/shots/2157574-BFF-s) by [R A D I O](https://dribbble.com/madebyradio)
+- [Polyfill.io](https://polyfill.io) for providing latest web technology
+- [Underdog](https://fonts.google.com/specimen/Underdog) for typeface
+- [BFF's](https://dribbble.com/shots/2157574-BFF-s) by [R A D I O](https://dribbble.com/madebyradio) for dog and cat animation
