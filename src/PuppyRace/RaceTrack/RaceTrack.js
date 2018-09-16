@@ -1,13 +1,19 @@
 import React from 'react';
-
-class Lane extends React.Component {
-  render() {
-    return <div>Lane</div>;
-  }
-}
+import { Lane } from './Lane';
+import { PuppyRaceContext } from '../PuppyRaceContext';
 
 export class RaceTrack extends React.Component {
   render() {
-    return <div>RaceTrack</div>;
+    return (
+      <PuppyRaceContext.Consumer>
+        {({ state }) => (
+          <div>
+            {state.animals.map((animal, index) => (
+              <Lane key={index} index={index} animal={animal} />
+            ))}
+          </div>
+        )}
+      </PuppyRaceContext.Consumer>
+    );
   }
 }
