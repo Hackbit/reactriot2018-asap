@@ -1,0 +1,14 @@
+.settings .field:not(:first-child) {
+  margin-top: 0.2em;
+}
+.settings .field:not(:last-child) {
+  margin-bottom: 0.2em;
+}
+.settings .add-button {
+  width: 100%;
+}
+.settings .ui.input input {
+  min-width: 0px;
+  flex: 1 1 auto;
+  margin-right: 4px;
+}

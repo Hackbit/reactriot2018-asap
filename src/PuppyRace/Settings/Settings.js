@@ -2,8 +2,9 @@ import React from 'react';
 import arrayMutators from 'final-form-arrays';
 import { Form, FormSpy, Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
+import { random, noop } from 'lodash-es';
 import { PuppyRaceContext } from '../PuppyRaceContext';
-import { ANIMAL_TYPES } from '../constants';
+import { ANIMAL_TYPES, ANIMAL_STATUS, GAME_STATUS } from '../constants';
 import './Settings.css';
 
 const INITIAL_VALUES = {
@@ -30,37 +31,79 @@ export class Settings extends React.Component {
         {({ state, actions }) => (
           <div className="settings">
             <Form
-              onSubmit={({ values }) => actions.setState(values)}
+              onSubmit={noop}
               mutators={arrayMutators}
               initialValues={INITIAL_VALUES}
-              render={({ handleSubmit, mutators }) => {
+              render={({ handleSubmit, mutators, values }) => {
+                const disabled = state.status !== GAME_STATUS.READY;
                 return (
                   <React.Fragment>
-                    <FormSpy subscription={{ values: true }} onChange={({ values }) => actions.setState(values)} />
+                    <FormSpy
+                      subscription={{ values: true }}
+                      onChange={({ values }) => actions.setState(values)}
+                    />
                     <form
                       key="form"
                       style={{
                         display: 'flex',
-                        flexDirection: 'column'
+                        flexDirection: 'column',
+                        margin: '20px'
                       }}
                       onSubmit={handleSubmit}
                     >
                       <FieldArray name="animals">
                         {({ fields }) =>
                           fields.map((name, index) => (
-                            <div>
-                              <Field name={`${name}.type`} component="select">
-                                <option value={ANIMAL_TYPES.DOG} children="🐶" />
-                                <option value={ANIMAL_TYPES.CAT} children="🐱" />
+                            <div
+                              className={`ui input field ${
+                                disabled ? 'disabled' : ''
+                              }`}
+                              key={index}
+                            >
+                              <Field
+                                name={`${name}.type`}
+                                component="select"
+                                disabled={disabled}
+                              >
+                                <option
+                                  value={ANIMAL_TYPES.DOG}
+                                  children="🐶"
+                                />
+                                <option
+                                  value={ANIMAL_TYPES.CAT}
+                                  children="🐱"
+                                />
                               </Field>
-                              <Field name={`${name}.name`} component="input" placeholder="name" />
-                              <button onClick={() => fields.remove(index)} children="X" />
+                              <Field
+                                name={`${name}.name`}
+                                component="input"
+                                placeholder="name"
+                                disabled={disabled}
+                              />
+                              <button
+                                onClick={() => fields.remove(index)}
+                                className="ui button icon"
+                                disabled={disabled}
+                                children={<i className="ui icon remove" />}
+                              />
                             </div>
                           ))
                         }
                       </FieldArray>
-                      <div>
-                        <button onClick={() => mutators.push('animals', {})} children="+" />
+                      <div className="ui field">
+                        <button
+                          className="ui button icon fluid"
+                          onClick={() =>
+                            mutators.push('animals', {
+                              type: [ANIMAL_TYPES.DOG, ANIMAL_TYPES.CAT][
+                                random(1)
+                              ],
+                              name: values.animals.length + 1
+                            })
+                          }
+                          disabled={disabled}
+                          children={<i className="ui icon add" />}
+                        />
                       </div>
                     </form>
                   </React.Fragment>
