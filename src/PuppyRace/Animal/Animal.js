@@ -22,7 +22,8 @@ export class Animal extends React.Component {
     name: PropTypes.string,
     color: PropTypes.string,
     progress: PropTypes.number,
-    status: PropTypes.oneOf(Object.keys(ANIMAL_STATUS).map((key) => ANIMAL_STATUS[key]))
+    status: PropTypes.oneOf(Object.keys(ANIMAL_STATUS).map((key) => ANIMAL_STATUS[key])),
+    style: PropTypes.object
   };
 
   static defaultProps = {
@@ -32,9 +33,19 @@ export class Animal extends React.Component {
     status: ANIMAL_STATUS.STANDING
   };
 
+  imgRef = React.createRef();
+
   render() {
-    const { type, status } = this.props;
+    const { type, status, style } = this.props;
     const image = ANIMAL_SPRITES[type][status];
-    return <img src={image} alt={type} className={`animal ${type}`} />;
+    return (
+      <img
+        src={image}
+        alt={type}
+        className={`animal ${type}`}
+        style={style}
+        ref={this.imgRef}
+      />
+    );
   }
 }

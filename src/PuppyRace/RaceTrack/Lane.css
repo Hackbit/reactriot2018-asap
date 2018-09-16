@@ -11,3 +11,23 @@
   /* height: calc(var(--animalSize) - 5px); */
   align-items: flex-end;
 }
+.lane.finished {
+  border-bottom: 5px dashed yellowgreen;
+}
+.lane > .meta {
+  position: absolute;
+  top: 10px;
+}
+.lane > .meta.name {
+  left: 10px;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1rem;
+  opacity: 0.5;
+}
+.lane > .meta.rank {
+  font-weight: bold;
+  font-size: 0.8rem;
+  word-break: keep-all;
+  width: fit-content;
+}
