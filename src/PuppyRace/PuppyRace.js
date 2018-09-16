@@ -4,19 +4,27 @@ import { RaceTrack } from './RaceTrack';
 import { Settings } from './Settings';
 import { Controls } from './Controls';
 import { PuppyRaceContext } from './PuppyRaceContext';
-import { GAME_STATUS, ANIMAL_STATUS } from './constants';
+import { GAME_STATUS, GAME_SPEED, ANIMAL_STATUS } from './constants';
 
 export class PuppyRace extends React.Component {
   state = {
     animals: [],
     status: GAME_STATUS.READY,
-    tickInterval: 100
+    tickInterval: GAME_SPEED.NORMAL
   };
 
   intervalTimer = null;
 
   actions = {
     setState: (state, callback) => this.setState(state, callback),
+    setSpeed: (tickInterval) => {
+      if (tickInterval !== this.state.tickInterval) {
+        clearInterval(this.intervalTimer);
+        this.setState({ tickInterval }, () => {
+          this.intervalTimer = setInterval(this.onTick, tickInterval);
+        });
+      }
+    },
     startGame: () =>
       this.state.status !== GAME_STATUS.START &&
       this.setState({ status: GAME_STATUS.START }, () => {
@@ -45,7 +53,9 @@ export class PuppyRace extends React.Component {
   };
 
   onTick = () => {
-    if (this.state.status === GAME_STATUS.START) {
+    const isFastMode = this.state.tickInterval === GAME_SPEED.FAST;
+    const isPlaying = this.state.status === GAME_STATUS.START;
+    if (isPlaying) {
       const animals = this.state.animals.map((animal, index) => {
         // calc animal progress
         animal = { ...animal, progress: animal.progress || 0 };
@@ -57,11 +67,21 @@ export class PuppyRace extends React.Component {
               : 'run';
           if (runOrLoss === 'run') {
             animal.status = ANIMAL_STATUS.RUNNING;
-            animal.progress = clamp(animal.progress + random(1, true), 100);
+            animal.progress = clamp(
+              animal.progress +
+                random(
+                  isFastMode ? 1 : 1, // min progress
+                  isFastMode ? 4 : 3, // max progress
+                  true
+                ),
+              100
+            );
             animal.recoverAt = null;
           } else if (animal.status !== ANIMAL_STATUS.LOSS) {
             animal.status = ANIMAL_STATUS.LOSS;
-            animal.recoverAt = new Date(Date.now() + random(1500, 2500));
+            animal.recoverAt = new Date(
+              Date.now() + (isFastMode ? 1000 : 1500) + random(1000)
+            );
           }
         }
         if (animal.progress === 100 && !animal.finishedAt) {
@@ -99,7 +119,7 @@ export class PuppyRace extends React.Component {
     const actions = this.actions;
     return (
       <PuppyRaceContext.Provider value={{ state, actions }}>
-        <div>
+        <div className="PuppyRace">
           <RaceTrack />
           <Settings />
           <Controls />

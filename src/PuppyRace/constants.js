@@ -15,3 +15,8 @@ export const ANIMAL_STATUS = {
   RUNNING: 1,
   LOSS: 2
 };
+
+export const GAME_SPEED = {
+  NORMAL: 300,
+  FAST: 150,
+};
